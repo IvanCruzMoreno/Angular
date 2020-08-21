@@ -6,7 +6,7 @@
   <div class="my-2 text-left">
     <botton class="btn btn-rounded btn-primary" type="button" [routerLink] = "['/clientes/form']">Crear Cliente</botton>
   </div>
-  
+
   <table class="table table-bordered table-striped">
     <thead>
       <tr>
@@ -15,6 +15,8 @@
         <th>apellido</th>
         <th>email</th>
         <th>fecha</th>
+        <th>editar</th>
+        <th>eliminar</th>
       </tr>
     </thead>
   <tbody>
@@ -24,6 +26,13 @@
       <td>{{cliente.apellido}}</td>
       <td>{{cliente.email}}</td>
       <td>{{cliente.fecha}}</td>
+
+      <td>
+        <button type="button" name="editar" [routerLink]= "['/clientes/form', cliente.id]" class="btn btn-primary">Editar</button>
+      </td>
+      <td>
+        <button type="button" name="eliminar" (click)='delete(cliente)' class="btn btn-danger">Eliminar</button>
+      </td>
     </tr>
   </tbody>
   </table>
