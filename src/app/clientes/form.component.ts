@@ -36,7 +36,10 @@ export class FormComponent implements OnInit {
   public loadCliente(): void{
     this.currentRoute.params
                      .subscribe(params => {
-                         this.clienteService.getCliente(params['id']).subscribe( cliente => this.cliente = cliente)
+                       let id = params['id']
+                       if(id){
+                         this.clienteService.getCliente(id).subscribe( cliente => this.cliente = cliente)
+                       }
                      });
   }
   public update(): void{
