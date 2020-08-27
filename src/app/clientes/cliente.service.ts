@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {CLIENTES} from './clientes.json';
 import {Cliente} from './cliente';
 import {Observable,of, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import swal from 'sweetalert2';
 import { Router } from '@angular/router';
@@ -24,7 +24,14 @@ export class ClienteService{
     return this.http.get<Cliente[]>(this.urlEndPoint);
   }
   createCliente(cliente: Cliente): Observable<Cliente>{
-    return this.http.post<Cliente>(this.urlEndPoint, cliente, {headers:this.httpHeader});
+    return this.http.post(this.urlEndPoint, cliente, {headers:this.httpHeader}).pipe(
+      map((json: any) => json.cliente as Cliente),
+      catchError(e => {
+        console.error(e.error.mensaje);
+        swal(e.error.mensaje, e.error.error, 'error');
+        return throwError(e);
+      })
+    );
   }
   getCliente(id): Observable<Cliente>{
     return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
@@ -37,9 +44,22 @@ export class ClienteService{
     )
   }
   updateCliente(cliente: Cliente): Observable<Cliente>{
-    return this.http.put<Cliente>(`${this.urlEndPoint}/${cliente.id}`, cliente, {headers: this.httpHeader});
+    return this.http.put(`${this.urlEndPoint}/${cliente.id}`, cliente, {headers: this.httpHeader}).pipe(
+      map((json: any) => json.cliente as Cliente),
+      catchError(e => {
+        console.error(e.error.mensaje);
+        swal(e.error.mensaje, e.error.error,'error');
+        return throwError(e);
+      })
+    );
   }
   deleteCliente(id: number): Observable<Cliente>{
-    return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`, {headers:this.httpHeader});
+    return this.http.delete<Cliente>(`${this.urlEndPoint}/${id}`, {headers:this.httpHeader}).pipe(
+      catchError(e => {
+        console.error(e.error.mensaje);
+        swal(e.error.mensaje, e.error.error,'error');
+        return throwError(e);
+      })
+    );
   }
 }
