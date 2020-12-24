@@ -15,6 +15,7 @@ export class FormComponent implements OnInit {
   private clienteService: ClienteService;
   private router: Router;
   private currentRoute: ActivatedRoute;
+  public errores: string[];
 
   constructor(clienteService: ClienteService, router: Router, currentRoute: ActivatedRoute) {
     this.clienteService = clienteService;
@@ -31,7 +32,12 @@ export class FormComponent implements OnInit {
                        .subscribe( cliente => {
                             this.router.navigate(['/clientes'])
                             swal('Nuevo Cliente', `Cliente ${cliente.nombre} creado con exito`, 'success')
-                          });
+                          },
+                        err => {
+                          this.errores = err.error.errors as string[];
+                          console.error('Error lanzado del servidor: ' + err.status);
+                          console.error(err.error.errors);
+                        });
   }
   public loadCliente(): void{
     this.currentRoute.params
@@ -47,6 +53,11 @@ export class FormComponent implements OnInit {
                        .subscribe( cliente => {
                          this.router.navigate(['/clientes'])
                          swal('Cliente Actualizado',`Cliente ${cliente.nombre} actualizado con exito`,'success')
-                       });
+                       },
+                     err => {
+                       this.errores = err.error.errors as string[];
+                       console.error('Erro lanzado del servidor: ' + err.status);
+                       console.error(err.error.errors);
+                     });
   }
 }
