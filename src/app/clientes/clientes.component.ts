@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Cliente} from './cliente';
-import {ClienteService} from './cliente.service';
+import { Cliente } from './cliente';
+import { ClienteService } from './cliente.service';
+import { ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
 
 @Component({
@@ -11,15 +12,29 @@ export class ClientesComponent implements OnInit {
 
   clientes: Cliente[];
   private clienteService: ClienteService;
+  private currentRoute: ActivatedRoute;
+  public paginador: any;
 
-  constructor(clienteService: ClienteService) {
+  constructor(clienteService: ClienteService, currentRoute: ActivatedRoute) {
     this.clienteService = clienteService;
+    this.currentRoute = currentRoute;
   }
 
   ngOnInit(): void {
-    this.clienteService.getClientes().subscribe(clientes => this.clientes = clientes);
+    this.currentRoute.paramMap.subscribe(params => {
+      let numPage: number = +params.get('numPage');
+      if (!numPage) {
+        numPage = 0;
+      }
+      this.clienteService.getClientes(numPage).subscribe(
+                                                  response => {
+                                                    this.clientes = response.content as Cliente[];
+                                                    this.paginador = response;
+                                                  });
+    })
+
   }
-  delete(cliente: Cliente): void{
+  delete(cliente: Cliente): void {
     swal({
       title: '¿Estas seguro?',
       text: `Esta accion va a eliminar a ${cliente.nombre} ${cliente.apellido}!`,
@@ -28,16 +43,16 @@ export class ClientesComponent implements OnInit {
       confirmButtonText: 'Si, eliminalo!',
       cancelButtonText: 'No, cancelar!',
       reverseButtons: true
-    }).then( result => {
-        if (result.value) {
-          this.clienteService.deleteCliente(cliente.id).subscribe( _response => {
-                this.clientes = this.clientes.filter(clie => clie !== cliente);
-                swal('Borrado!',`${cliente.nombre} ${cliente.apellido} ha sido eliminado`,'success');
-           });
-        }else{
-          swal('Cancelado',`${cliente.nombre} ${cliente.apellido} permanece intacto`,'error')
-        }
+    }).then(result => {
+      if (result.value) {
+        this.clienteService.deleteCliente(cliente.id).subscribe(_response => {
+          this.clientes = this.clientes.filter(clie => clie !== cliente);
+          swal('Borrado!', `${cliente.nombre} ${cliente.apellido} ha sido eliminado`, 'success');
+        });
+      } else {
+        swal('Cancelado', `${cliente.nombre} ${cliente.apellido} permanece intacto`, 'error')
       }
+    }
     );
   }
 

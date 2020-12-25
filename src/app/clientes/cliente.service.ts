@@ -6,6 +6,7 @@ import {catchError, map} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import {formatDate} from '@angular/common';
 
 @Injectable()
 export class ClienteService{
@@ -19,9 +20,19 @@ export class ClienteService{
     this.http = http;
     this.router = router;
   }
-  getClientes(): Observable<Cliente[]>{
-    //return of(CLIENTES);
-    return this.http.get<Cliente[]>(this.urlEndPoint);
+  getClientes(numPage: number): Observable<any>{
+    return this.http.get(this.urlEndPoint + '/page/' + numPage)
+                    .pipe(
+                        map( (response:any) => {
+                          (response.content as Cliente[]).map(
+                                                        cliente => {
+                                                        cliente.nombre = cliente.nombre.toUpperCase();
+                                                        cliente.fecha = formatDate(cliente.fecha, 'fullDate', 'en-US');
+                                                        return cliente;
+                                                      });
+                        return response;
+                        })
+                      );
   }
   createCliente(cliente: Cliente): Observable<Cliente>{
     return this.http.post(this.urlEndPoint, cliente, {headers:this.httpHeader}).pipe(
