@@ -12,6 +12,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormComponent } from './clientes/form.component';
 import { FormsModule } from '@angular/forms';
 import { PaginatorComponent } from './paginator/paginator.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {  MatNativeDateModule } from '@angular/material/core';
+import {  MatDatepickerModule } from '@angular/material/datepicker';
+import { VerFotoComponent } from './clientes/ver-foto/ver-foto.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/clientes',pathMatch:'full'},
@@ -19,7 +23,8 @@ const routes: Routes = [
   {path: 'clientes', component: ClientesComponent},
   {path: 'clientes/page/:numPage', component: ClientesComponent},
   {path: 'clientes/form', component: FormComponent},
-  {path: 'clientes/form/:id', component: FormComponent}
+  {path: 'clientes/form/:id', component: FormComponent},
+  {path: 'clientes/ver/:id', component: VerFotoComponent}
 ];
 
 @NgModule({
@@ -30,13 +35,17 @@ const routes: Routes = [
     DirectivaComponent,
     ClientesComponent,
     FormComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    VerFotoComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [ClienteService],
   bootstrap: [AppComponent]
