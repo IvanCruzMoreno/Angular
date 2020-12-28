@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from './cliente';
+import {Region} from './region';
 import { ClienteService } from './cliente.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
@@ -16,6 +17,7 @@ export class FormComponent implements OnInit {
   private router: Router;
   private currentRoute: ActivatedRoute;
   public errores: string[];
+  public regiones: Region[];
 
   constructor(clienteService: ClienteService, router: Router, currentRoute: ActivatedRoute) {
     this.clienteService = clienteService;
@@ -24,10 +26,11 @@ export class FormComponent implements OnInit {
   }
   ngOnInit(): void {
     this.loadCliente();
+    this.clienteService.getRegiones().subscribe( regiones => this.regiones = regiones);
   }
   public create():void{
     //console.log("Cliked!");
-    //console.log(this.cliente);
+    console.log(this.cliente);
     this.clienteService.createCliente(this.cliente)
                        .subscribe( cliente => {
                             this.router.navigate(['/clientes'])
@@ -49,6 +52,7 @@ export class FormComponent implements OnInit {
                      });
   }
   public update(): void{
+    console.log(this.cliente);
     this.clienteService.updateCliente(this.cliente)
                        .subscribe( cliente => {
                          this.router.navigate(['/clientes'])
@@ -60,4 +64,11 @@ export class FormComponent implements OnInit {
                        console.error(err.error.errors);
                      });
   }
+  compararRegion(regionBucle: Region, regionAsignada: Region): boolean{
+    if(regionBucle === undefined && regionAsignada === undefined){
+      return true;
+    }
+    return regionBucle === null || regionAsignada === null || regionBucle === undefined || regionAsignada === undefined ? false: regionBucle.id === regionAsignada.id;
+  }
+
 }

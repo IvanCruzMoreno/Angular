@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {CLIENTES} from './clientes.json';
 import {Cliente} from './cliente';
+import {Region} from './region';
 import {Observable,of, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {HttpClient, HttpHeaders, HttpRequest, HttpEvent} from '@angular/common/http';
@@ -87,6 +87,9 @@ export class ClienteService{
     const req = new HttpRequest('POST', `${this.urlEndPoint}/upload`, formData,{reportProgress: true} );
 
     return this.http.request(req);
+  }
+  getRegiones(): Observable<Region[]>{
+    return this.http.get<Region[]>(this.urlEndPoint + '/regiones');
   }
 
 }
