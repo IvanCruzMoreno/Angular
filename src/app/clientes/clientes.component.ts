@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
 import { ModalService } from './ver-foto/modal.service';
+import {AuthService} from '../usuarios/auth.service';
 import { ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
 
@@ -17,7 +18,7 @@ export class ClientesComponent implements OnInit {
   public paginador: any;
   public clienteSeleccionado: Cliente;
 
-  constructor(clienteService: ClienteService, currentRoute: ActivatedRoute, private modalService: ModalService) {
+  constructor(clienteService: ClienteService, currentRoute: ActivatedRoute, private modalService: ModalService, public authService: AuthService) {
     this.clienteService = clienteService;
     this.currentRoute = currentRoute;
   }

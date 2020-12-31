@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Cliente } from '../cliente';
 import { ClienteService } from '../cliente.service';
 import {ModalService} from './modal.service';
+import {AuthService} from '../../usuarios/auth.service';
 import swal from 'sweetalert2';
 import { HttpEventType } from '@angular/common/http';
 
@@ -17,7 +18,7 @@ export class VerFotoComponent implements OnInit {
   public imagenSeleccionada: File;
   public progreso: number = 0;
 
-  constructor(private clienteService: ClienteService, public modalService: ModalService) { }
+  constructor(private clienteService: ClienteService, public modalService: ModalService, public authService: AuthService) { }
 
   ngOnInit(): void {
 

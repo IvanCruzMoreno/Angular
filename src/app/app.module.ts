@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {  MatNativeDateModule } from '@angular/material/core';
 import {  MatDatepickerModule } from '@angular/material/datepicker';
 import { VerFotoComponent } from './clientes/ver-foto/ver-foto.component';
+import { LoginComponent } from './usuarios/login.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/clientes',pathMatch:'full'},
@@ -23,7 +24,8 @@ const routes: Routes = [
   {path: 'clientes', component: ClientesComponent},
   {path: 'clientes/page/:numPage', component: ClientesComponent},
   {path: 'clientes/form', component: FormComponent},
-  {path: 'clientes/form/:id', component: FormComponent}
+  {path: 'clientes/form/:id', component: FormComponent},
+  {path: 'login', component: LoginComponent}
 ];
 
 @NgModule({
@@ -35,7 +37,8 @@ const routes: Routes = [
     ClientesComponent,
     FormComponent,
     PaginatorComponent,
-    VerFotoComponent
+    VerFotoComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

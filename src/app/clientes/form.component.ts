@@ -60,7 +60,7 @@ export class FormComponent implements OnInit {
                        },
                      err => {
                        this.errores = err.error.errors as string[];
-                       console.error('Erro lanzado del servidor: ' + err.status);
+                       console.error('Error lanzado del servidor: ' + err.status);
                        console.error(err.error.errors);
                      });
   }
