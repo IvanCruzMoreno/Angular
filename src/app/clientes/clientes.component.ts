@@ -18,7 +18,7 @@ export class ClientesComponent implements OnInit {
   public paginador: any;
   public clienteSeleccionado: Cliente;
 
-  constructor(clienteService: ClienteService, currentRoute: ActivatedRoute, private modalService: ModalService, public authService: AuthService) {
+  constructor(clienteService: ClienteService, currentRoute: ActivatedRoute, public modalService: ModalService, public authService: AuthService) {
     this.clienteService = clienteService;
     this.currentRoute = currentRoute;
   }
